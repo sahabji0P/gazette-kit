@@ -1,0 +1,31 @@
+{
+  "editions": [
+    {
+      "number": 3,
+      "folio": "Monday · 2 November 2026 · afternoon",
+      "wire": [
+        "Kestrel 3 LEAD: $3/$15, 400K context, open-weights Mini · strike 8",
+        "Tess CLI 2.0: plugins sandboxed by default · strike 8",
+        "Brightline $6M seed (editable agent memory) · Halyard H2 (vendor numbers)",
+        { "text": "Build: Kestrel Mini router for Pocketful (suggestion)", "private": true },
+        "Cooled: northwind-kestrel-2"
+      ]
+    },
+    {
+      "number": 2,
+      "folio": "Sunday · 1 November 2026 · evening",
+      "wire": [
+        "Lumen Voice LEAD: phone agent yields in under 200 ms (vendor-reported) · strike 7",
+        "Learn: Barge-in, explained from zero",
+        "Cooled: tess-cli-1-9"
+      ]
+    },
+    {
+      "number": 1,
+      "folio": "Saturday · 31 October 2026 · morning",
+      "wire": [
+        "First edition. Kestrel 2 LEAD · Tessellate plugin incident"
+      ]
+    }
+  ]
+}

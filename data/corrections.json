@@ -1,0 +1,5 @@
+{
+  "do_not_reintroduce": [
+    { "wrong": "40,000 installs", "right": "about 4,000 installs", "story": "tessellate-plugin-incident", "date": "2026-10-31" }
+  ]
+}

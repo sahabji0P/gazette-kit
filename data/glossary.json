@@ -1,0 +1,10 @@
+{
+  "terms": [
+    { "id": "context-window", "term": "Context window", "aliases": ["context windows"], "definition": "How much text a model can read in one call, counted in tokens. Bigger windows cost more per call and are emptied when the call ends.", "source": "Sample definition" },
+    { "id": "token", "term": "Token", "match": "tokens", "aliases": ["token"], "definition": "The unit models read and bill by: roughly three-quarters of an English word.", "source": "Sample definition" },
+    { "id": "barge-in", "term": "Barge-in", "definition": "Talking over a voice agent while it speaks. A good agent stops its audio, its text and any pending action at once.", "source": "Sample definition" },
+    { "id": "sandbox", "term": "Sandbox", "aliases": ["sandboxes"], "definition": "An isolated space where code runs without access to your files, network or secrets unless you allow it.", "source": "Sample definition" },
+    { "id": "allowlist", "term": "Allowlist", "definition": "A list of what is permitted; everything not on it is denied.", "source": "Sample definition" },
+    { "id": "open-weights", "term": "Open weights", "definition": "A model whose trained parameters you can download and run yourself, usually under a licence.", "source": "Sample definition" }
+  ]
+}

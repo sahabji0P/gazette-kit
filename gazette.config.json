@@ -1,0 +1,98 @@
+{
+  "paper": {
+    "name": "THE SAMPLE GAZETTE",
+    "tagline": "A daily growth newspaper · learn something or leave hungry",
+    "slug": "sample-gazette",
+    "owner": "Alex Reader",
+    "language": "en"
+  },
+  "agent": {
+    "name": "Informer",
+    "byline": "By Informer",
+    "take_label": "Informer’s take",
+    "roles": {
+      "editor": "Informer",
+      "reporter": "News Man",
+      "explainer": "Explainer"
+    },
+    "ping": "2–3 sentences to the owner when an edition ships, no article paste. Quiet runs send nothing."
+  },
+  "schedule": {
+    "timezone": "Asia/Kolkata",
+    "timezone_label": "IST",
+    "runs": [
+      { "time": "09:00", "slot": "morning" },
+      { "time": "14:00", "slot": "afternoon" },
+      { "time": "19:00", "slot": "evening" }
+    ],
+    "weekends": true,
+    "late_after_minutes": 90
+  },
+  "edition": {
+    "volume": 1
+  },
+  "beats": {
+    "about": "AI for builders: models, agent harnesses, voice, memory, safety and the deals behind them.",
+    "sections": [
+      { "key": "models", "label": "Models & Pricing", "short": "Models", "blurb": "Model launches, price lists, context windows, benchmarks." },
+      { "key": "tools", "label": "Tools & Harnesses", "short": "Tools", "blurb": "Coding agents, harness releases, APIs, sandboxes and agent incidents." },
+      { "key": "build", "label": "Build", "short": "Build", "blurb": "Ideas to try — suggestions, not news." },
+      { "key": "startups", "label": "Builders & Startups", "short": "Startups", "blurb": "Agent products, funding rounds, builder launches." },
+      { "key": "learn", "label": "Learn", "short": "Learn", "blurb": "Explainers, papers and safety reports — the why behind the news." },
+      { "key": "hardware", "label": "Hardware & Deals", "short": "Hardware", "blurb": "Chips, compute, acquisitions, big deals and policy." },
+      { "key": "people", "label": "People", "short": "People", "blurb": "Moves and culture.", "front": "strip" }
+    ],
+    "threads": [
+      { "key": "voice", "label": "Voice agents", "chip": "Voice", "blurb": "Speech in, speech out, and talking over the agent." },
+      { "key": "memory", "label": "Memory", "chip": "Memory", "blurb": "What agents remember, and how." },
+      { "key": "safety", "label": "Harness safety & sandbox", "chip": "Safety", "blurb": "Permissions, sandboxes, incidents." },
+      { "key": "pricing", "label": "Pricing", "chip": "Pricing", "blurb": "What it costs to run." }
+    ],
+    "tags": ["Open weights", "Agents"],
+    "standing_beats": []
+  },
+  "sources": {
+    "trust_order": [
+      "Company and lab posts, official docs, API changelogs",
+      "GitHub releases and CHANGELOG files",
+      "Package registry timestamps (npm, PyPI)",
+      "arXiv and Hugging Face model cards",
+      "Regulatory filings (e.g. SEC EDGAR)",
+      "Public posts by the people involved (X, Bluesky, Mastodon)",
+      "Press — backup only; press-only claims are RUMOR"
+    ],
+    "feeds": [
+      { "id": "hf-blog", "name": "Hugging Face blog", "url": "https://huggingface.co/blog/feed.xml", "tier": 1 },
+      { "id": "openai-news", "name": "OpenAI news", "url": "https://openai.com/news/rss.xml", "tier": 1 },
+      { "id": "deepmind-blog", "name": "Google DeepMind blog", "url": "https://deepmind.google/blog/rss.xml", "tier": 1 },
+      { "id": "claude-code-releases", "name": "Claude Code releases", "url": "https://github.com/anthropics/claude-code/releases.atom", "tier": 1 },
+      { "id": "simonw", "name": "Simon Willison", "url": "https://simonwillison.net/atom/everything/", "tier": 2 },
+      { "id": "arxiv-cs-ai", "name": "arXiv cs.AI", "url": "https://rss.arxiv.org/rss/cs.AI", "tier": 2 },
+      { "id": "hn-top", "name": "Hacker News (200+ points)", "url": "https://hnrss.org/frontpage?points=200", "tier": 3 },
+      { "id": "anthropic-news", "name": "Anthropic news", "url": "https://www.anthropic.com/news", "type": "page", "tier": 1, "note": "No feed; open the page and compare against data/seen.json" }
+    ]
+  },
+  "policy": {
+    "strike_threshold": 7,
+    "front_per_section": 5,
+    "seen_ttl_days": 45,
+    "title_dupe_threshold": 0.6
+  },
+  "project": {
+    "enabled": true,
+    "name": "Pocketful",
+    "about": "Pocketful is a budgeting app for university students: it reads bank notifications, sorts spending, and a small voice assistant answers 'can I afford this?'. Stack: React Native app, a Python API, one hosted LLM for categorising and one small model on-device.",
+    "label": "Build for Pocketful",
+    "id_prefix": "build-pocketful-",
+    "private": true,
+    "private_markers": ["Pocketful"]
+  },
+  "saves": {
+    "agent_saved": ["learn-context-windows"]
+  },
+  "theme": {
+    "fonts_url": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Playfair+Display:wght@700;900&display=swap",
+    "tape_label": "Prices · per million tokens in/out",
+    "banner": "Sample edition — every story, company, product and number in it is made up."
+  }
+}

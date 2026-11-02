@@ -1,0 +1,8 @@
+<h2>What changed</h2>
+<p>Every plugin now starts in its own sandbox: no network, no access to your home folder, no environment variables. To give a plugin more, you add a line to <code>.tess/allow.toml</code> in the project:</p>
+<pre><code>[plugins."tess-fmt"]
+read = ["./src"]
+network = []</code></pre>
+<p>The allowlist is a file, so it shows up in code review like any other change.</p>
+<h2>Why now</h2>
+<p>Last week a tampered community plugin read API keys from about 4,000 machines. Under the new defaults it would have seen no keys at all.</p>

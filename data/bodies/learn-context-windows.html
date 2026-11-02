@@ -1,0 +1,9 @@
+<h2>The one-line idea</h2>
+<p>A model reads text in tokens. Its context window is the most tokens it can read in one call: your prompt, any documents, and the conversation so far.</p>
+<h2>What 400K buys</h2>
+<p>About 300,000 English words — a long novel, or a mid-sized codebase. You can paste a whole contract instead of chunking it.</p>
+<h2>What it does not buy</h2>
+<p>Memory. When the call ends, the window is empty. Anything the model should know next time has to be stored somewhere and put back in. Long windows also cost more: you pay for every token you send, every call.</p>
+<h2>Self-test</h2>
+<details class="selftest"><summary>Your assistant forgets a user's name between chats, even with a 400K window. Why?</summary>
+<p>Because the window is per call. The name has to be saved in a memory store and added to the next prompt.</p></details>
