@@ -140,6 +140,25 @@ def is_private_story(story: dict, cfg: dict) -> bool:
     return bool(p.get("enabled") and p.get("private", True) and prefix and story.get("id", "").startswith(prefix))
 
 
+PRIVATE_TAG = re.compile(r"<!--\s*(/?)\s*private\s*-->", re.I)
+
+
+def private_tag_problems(text: str) -> list[str]:
+    """Private blocks must be balanced and not nested: open, close, open, close…"""
+    problems, inside = [], False
+    for m in PRIVATE_TAG.finditer(text):
+        closing = bool(m.group(1))
+        line = text.count("\n", 0, m.start()) + 1
+        if closing and not inside:
+            problems.append(f"line {line}: <!-- /private --> without an opening <!-- private -->")
+        elif not closing and inside:
+            problems.append(f"line {line}: <!-- private --> opened again before the previous block closed")
+        inside = not closing
+    if inside:
+        problems.append("a <!-- private --> block is never closed with <!-- /private -->")
+    return problems
+
+
 def private_markers(cfg: dict) -> list[str]:
     p = project(cfg)
     markers = list(p.get("private_markers") or [])

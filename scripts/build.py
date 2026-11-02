@@ -327,6 +327,9 @@ class Paper:
         body = ""
         if body_file.exists():
             raw = body_file.read_text(encoding="utf-8")
+            bad = C.private_tag_problems(raw)
+            if bad:
+                C.die(f"data/bodies/{s['id']}.html: " + "; ".join(bad) + " (an unclosed private block would leak into a public build)")
             if self.public:
                 raw = PRIVATE_BLOCK.sub("", raw)
             body = '<h2 class="tpl-h">Details</h2>\n<div class="story-body">\n' + self.autolink(raw.strip(), used, "") + "\n</div>"

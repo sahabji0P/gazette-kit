@@ -117,6 +117,11 @@ def check_data(cfg: dict, cat: dict, rep: Report) -> None:
     rep.add("live lead/confirmed stories without a page (add what_happened)", pages)
 
     bodies = C.DATA / "bodies"
+    tags = []
+    for p in sorted(bodies.glob("*.html")) if bodies.exists() else []:
+        tags += [f"{p.name}: {x}" for x in C.private_tag_problems(p.read_text(encoding="utf-8"))]
+    rep.add("unbalanced <!-- private --> blocks in bodies", tags)
+
     orphans = [p.name for p in bodies.glob("*.html") if p.stem not in by_id] if bodies.exists() else []
     rep.add("body files with no story record", orphans)
 
@@ -199,6 +204,8 @@ def check_privacy(cfg: dict, site: Path, rep: Report) -> None:
         for m in markers:
             if m.lower() in text:
                 hits.append(f"{f.relative_to(site)}: contains {m!r}")
+        if C.PRIVATE_TAG.search(text):
+            hits.append(f"{f.relative_to(site)}: contains a private-block tag (something private was not stripped)")
     rep.add(f"private markers in public output ({', '.join(markers)})", hits)
 
 
