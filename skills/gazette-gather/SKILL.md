@@ -12,9 +12,9 @@ You are the **reporter**. Your output is a decision and the evidence behind it. 
 ```bash
 python3 scripts/fetch.py
 ```
-This opens the run and writes `data/snapshots/<run>.json`. Read its summary:
+This opens the run, prints its **run id**, and writes `data/snapshots/<run-id>.json`. Keep the run id: every later step passes it as `--run <run-id>`. Then read the summary:
 
-- **Most sources failed** → stop. `python3 scripts/runlog.py close --status failed --note "<which feeds, what error>"`. A failed fetch is never a quiet day.
+- **Most sources failed** → stop. `python3 scripts/runlog.py close --run <run-id> --status failed --note "<which feeds, what error>"`. A failed fetch is never a quiet day.
 - **Late run note** → cover the whole window it printed. Do not backdate.
 
 In the snapshot, items with `"seen"` were already covered: skip them. Items with `"possible_dupe_of"` are probably the same news under a new URL. Only use them if they add something new (a correction, a price, an independent check). `manual` lists pages without a feed: open each one and look for anything new in the window.
@@ -93,4 +93,4 @@ Feeds: ok X/Y · failed: <ids> · manual pages checked: <ids>
 
 ## 6. Hand off
 - **SHIP**: hand RESULT.md to the editor (`gazette-write`).
-- **QUIET**: `python3 scripts/runlog.py close --status quiet --top-strike N --hunt hunts/<run>/RESULT.md --note "<why>"`. Optionally add a one-line "check — HOLD" entry to `notes/MEMORY.md`. No ping.
+- **QUIET**: `python3 scripts/runlog.py close --run <run-id> --status quiet --top-strike N --hunt hunts/<run>/RESULT.md --note "<why>"`. Tell the editor, who may add a one-line "check — HOLD" entry to `notes/MEMORY.md` (if you're one agent wearing every hat, do it yourself). No ping.

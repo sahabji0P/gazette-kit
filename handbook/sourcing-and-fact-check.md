@@ -44,4 +44,4 @@ For each line: `OK` · `FIX: <new wording> · <source>` · `CUT: <why>` · `LABE
 See `skills/gazette-write` §7. The wrong wording goes into `data/corrections.json`. From then on `check.py` fails the build if it reappears.
 
 ## Dedupe
-`fetch.py` canonicalises URLs (drops tracking parameters, `www.`, trailing slashes) and skips anything in `data/seen.json`. Titles that closely match covered items are flagged `possible_dupe_of`. `runlog.py close --status shipped` adds every story source to the seen-store. Entries expire after `policy.seen_ttl_days`, unless their story is still live.
+`fetch.py` canonicalises URLs (drops tracking parameters, `www.`, trailing slashes) and skips anything in `data/seen.json`. Titles that closely match covered items are flagged `possible_dupe_of`. `runlog.py close --run <run-id> --status shipped` adds every story source to the seen-store. Entries expire after `policy.seen_ttl_days`, unless their story is still live.

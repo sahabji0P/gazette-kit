@@ -39,17 +39,18 @@ Ship a **growth newspaper**, not a link dump.
 | 2b. Build ideas | editor | `skills/gazette-build-for-project` | private project suggestions |
 | 3. Publish | editor | `skills/gazette-publish` | `build.py` → `check.py` PASS → `runlog.py close` → notes → ping |
 
-QUIET at step 1 → `python3 scripts/runlog.py close --status quiet --top-strike N --note "…"` and stop. No ping.
+QUIET at step 1 → `python3 scripts/runlog.py close --run <run-id> --status quiet --top-strike N --note "…"` and stop. No ping.
 
 Roles are hats, not separate agents. One agent can wear all of them. If you split them across agents, only the **editor** edits files under `data/` and `notes/`. The others hand work to the editor (see `handbook/roles.md`).
 
 ## 5. Commands
 ```bash
-python3 scripts/fetch.py                       # start every run: feeds → data/snapshots/<run>.json + open run record
+python3 scripts/fetch.py                       # start every run: prints the run id, feeds → data/snapshots/<run-id>.json
 python3 scripts/build.py                       # private paper → out/  (open out/index.html)
 python3 scripts/check.py                       # gate: must print PASS
 python3 scripts/build.py --public && python3 scripts/check.py --public   # public copy → out-public/
-python3 scripts/runlog.py close --status shipped|quiet|failed --top-strike N --edition N --note "…"
+python3 scripts/runlog.py close --run <run-id> --status shipped|quiet|failed --top-strike N --edition N --note "…"
+python3 scripts/runlog.py abandon --run <run-id> --note "…"   # a run that died without closing
 python3 scripts/runlog.py last                 # what happened last run
 ```
 Python 3.9+, standard library only. Nothing to install.
