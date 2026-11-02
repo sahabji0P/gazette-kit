@@ -70,4 +70,11 @@ This also adds every story source to `data/seen.json`, so the next fetch skips t
 
 Open `out/index.html` if you can (e.g. `open out/index.html` on macOS). Then send the owner the ping described in `agent.ping` in the config: by default **2–3 sentences, no article paste**: the lead in plain words and the one thing worth trying. Only say you opened, synced or sent something if you actually did.
 
-If the paper lives in git (needed for cloud-scheduled runs), commit `data/`, `notes/` and `hunts/` with a message like `edition N: <lead id>`. `out/` is rebuilt, so it isn't committed.
+If the paper lives in git (needed for cloud-scheduled runs), save the run's state:
+```bash
+git pull --rebase
+git add data notes hunts
+git commit -m "edition N: <lead id>"
+git push
+```
+`out/` is rebuilt every time, so it isn't committed. Quiet and failed runs commit too (their run record lives in `data/runs.json`).
