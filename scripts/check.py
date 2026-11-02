@@ -94,8 +94,13 @@ def check_data(cfg: dict, cat: dict, rep: Report) -> None:
         if strike is not None and not (1 <= strike <= 10):
             problems.append(f"{sid}: strike must be 1–10")
     leads = [s["id"] for s in stories if s.get("status") == "lead"]
-    if cat.get("lead") and leads != [cat["lead"]]:
-        problems.append(f"lead is {cat.get('lead')!r} but stories with status lead are {leads}")
+    expected = [cat["lead"]] if cat.get("lead") else []
+    if leads != expected:
+        problems.append(f"stories.json → lead is {cat.get('lead')!r} but stories with status \"lead\" are {leads} "
+                        "(there must be exactly one, and they must match)")
+    live = [s for s in stories if s.get("status") != "archive"]
+    if live and not cat.get("lead"):
+        problems.append("stories.json → lead is empty but there are live stories; pick a lead")
     rep.add("story records", problems)
 
     one_way, missing = [], []
