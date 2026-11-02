@@ -17,6 +17,8 @@ This opens the run, prints its **run id**, and writes `data/snapshots/<run-id>.j
 - **Most sources failed** → stop. `python3 scripts/runlog.py close --run <run-id> --status failed --note "<which feeds, what error>"`. A failed fetch is never a quiet day.
 - **Late run note** → cover the whole window it printed. Do not backdate.
 
+**Reading plan.** Snapshots get big (one arXiv feed alone can add hundreds of items a day, capped at `policy.max_items_per_source`). Items are sorted tier first, newest first. Read every **tier 1** item. Skim tier 2 and below **by title**, and open only titles that touch a beat or a watchlist item. Don't load the whole file at once if it's large; read it in parts.
+
 In the snapshot, items with `"seen"` were already covered: skip them. Items with `"possible_dupe_of"` are probably the same news under a new URL. Only use them if they add something new (a correction, a price, an independent check). `manual` lists pages without a feed: open each one and look for anything new in the window.
 
 ## 2. Hunt beyond the feeds
