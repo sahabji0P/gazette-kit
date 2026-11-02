@@ -8,4 +8,4 @@ mkdir -p .claude && cp extras/claude-code/settings.json .claude/settings.json
 ln -s ../skills .claude/skills                        # skills become /gazette-* in Claude Code
 ```
 
-Read `settings.json` before you copy it. It allows the kit's four scripts, web fetch and search, and edits under `data/`, `notes/` and `hunts/`. Tighten it if you like.
+Read `settings.json` before you copy it. It allows the kit's four scripts, web fetch and search, edits under `data/`, `notes/` and `hunts/`, and the few git commands a cloud run needs to save its state (`git add data notes hunts`, `git commit -m`, `git pull --rebase`, `git push`). Drop the git lines if your runs are local only. Tighten it further if you like.
