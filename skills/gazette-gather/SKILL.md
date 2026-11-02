@@ -95,4 +95,4 @@ Feeds: ok X/Y · failed: <ids> · manual pages checked: <ids>
 
 ## 6. Hand off
 - **SHIP**: hand RESULT.md to the editor (`gazette-write`).
-- **QUIET**: `python3 scripts/runlog.py close --run <run-id> --status quiet --top-strike N --hunt hunts/<run>/RESULT.md --note "<why>"`. Tell the editor, who may add a one-line "check — HOLD" entry to `notes/MEMORY.md` (if you're one agent wearing every hat, do it yourself). No ping.
+- **QUIET**: `python3 scripts/runlog.py close --run <run-id> --status quiet --top-strike N --hunt hunts/<run>/RESULT.md --note "<why>"`. Tell the editor, who may add a one-line "check — HOLD" entry to `notes/MEMORY.md` (if you're one agent wearing every hat, do it yourself). No ping. For cloud runs, still save state with the git steps in `skills/gazette-publish` §7.
