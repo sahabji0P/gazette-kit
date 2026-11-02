@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """runlog.py — close the run that fetch.py opened, and keep the seen-store current.
 
-    python3 scripts/runlog.py close --status shipped --top-strike 8 --note "Lead: ..."
-    python3 scripts/runlog.py close --status quiet   --top-strike 5 --note "Nothing at 7+"
-    python3 scripts/runlog.py close --status failed  --note "Most feeds timed out"
+    python3 scripts/runlog.py close --run <id> --status shipped --top-strike 8 --note "Lead: ..."
+    python3 scripts/runlog.py close --run <id> --status quiet   --top-strike 5 --note "Nothing at 7+"
+    python3 scripts/runlog.py close --run <id> --status failed  --note "Most feeds timed out"
+    python3 scripts/runlog.py abandon --run <id> --note "crashed"   # a run that died without closing
     python3 scripts/runlog.py seen                   # re-sync data/seen.json from stories.json
     python3 scripts/runlog.py last                   # print the last run record
 
@@ -49,11 +50,15 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Close runs and maintain the seen-store.")
     sub = ap.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("close", help="close the open run")
+    c.add_argument("--run", help="run id printed by fetch.py (required when more than one run is open)")
     c.add_argument("--status", required=True, choices=("shipped", "quiet", "failed"))
     c.add_argument("--top-strike", type=int, help="highest strike found this run (1–10)")
     c.add_argument("--edition", type=int, help="edition number shipped (status shipped)")
     c.add_argument("--hunt", help="path to this run's hunts/<time>/RESULT.md")
     c.add_argument("--note", default="", help="one line: lead, or why it was quiet/failed")
+    a = sub.add_parser("abandon", help="mark an open run that died as abandoned")
+    a.add_argument("--run", required=True)
+    a.add_argument("--note", default="")
     sub.add_parser("seen", help="sync data/seen.json from stories.json")
     sub.add_parser("last", help="print the last run")
     args = ap.parse_args()
@@ -70,9 +75,24 @@ def main() -> None:
         return
 
     open_runs = [r for r in runs["runs"] if r.get("status") == "open"]
+    if args.cmd == "abandon":
+        run = next((r for r in open_runs if r["id"] == args.run), None)
+        if not run:
+            C.die(f"no open run with id {args.run!r}")
+        run.update(status="abandoned", closed=C.now(cfg).isoformat(), note=args.note or "abandoned")
+        C.save_json(C.DATA / "runs.json", runs)
+        print(f"run {run['id']} marked abandoned")
+        return
     if not open_runs:
         C.die("no open run — start every run with scripts/fetch.py")
-    run = open_runs[-1]
+    if args.run:
+        run = next((r for r in open_runs if r["id"] == args.run), None)
+        if not run:
+            C.die(f"no open run with id {args.run!r}; open runs: {', '.join(r['id'] for r in open_runs)}")
+    elif len(open_runs) == 1:
+        run = open_runs[0]
+    else:
+        C.die(f"several runs are open ({', '.join(r['id'] for r in open_runs)}); say which with --run <id>")
     att, ok = run.get("sources_attempted", 0), run.get("sources_ok", 0)
     if args.status == "quiet" and att and ok / att < 0.5:
         C.die(f"{ok}/{att} sources worked — that is a failed run, not a quiet one. Close it with --status failed.")

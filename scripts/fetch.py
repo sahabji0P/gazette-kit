@@ -198,9 +198,7 @@ def main() -> None:
         delta = (started - sched).total_seconds() / 60
         if 0 <= delta < 24 * 60 and (late is None or delta < late[1]):
             late = (slot.get("slot"), delta)
-    for r in runs["runs"]:
-        if r.get("status") == "open":  # a run that was never closed is recorded as abandoned, not erased
-            r.update(status="abandoned", note=(r.get("note") or "") + " (never closed; superseded by " + run_id + ")")
+    still_open = [r["id"] for r in runs["runs"] if r.get("status") == "open"]
     runs["runs"].append({
         "id": run_id,
         "started": started.isoformat(),
@@ -215,7 +213,11 @@ def main() -> None:
     })
     C.save_json(C.DATA / "runs.json", runs)
 
-    print(f"run {run_id}: window since {snapshot['since']}")
+    print(f"run id: {run_id}   (close it with: python3 scripts/runlog.py close --run {run_id} …)")
+    print(f"window since {snapshot['since']}")
+    if still_open:
+        print(f"NOTE: other runs are still open: {', '.join(still_open)}. If one is still working, leave it alone; "
+              f"if it died, mark it with: python3 scripts/runlog.py abandon --run <id>")
     print(f"sources ok {ok}/{attempted} · items in window {len(items)} · new {new} · manual checks {len(manual)}")
     for s in sources:
         if not s["ok"]:

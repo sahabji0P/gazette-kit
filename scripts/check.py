@@ -13,6 +13,7 @@ import argparse
 import json
 import re
 import sys
+from datetime import timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -226,8 +227,13 @@ def check_runs(rep: Report) -> None:
         if r.get("status") == "quiet" and r.get("sources_attempted"):
             if r.get("sources_ok", 0) / r["sources_attempted"] < 0.5:
                 problems.append(f"run {r.get('id')}: marked quiet but most sources failed — it was a failed run")
-    open_runs = [r.get("id") for r in runs[:-1] if r.get("status") == "open"]
-    problems += [f"run {i} was never closed (scripts/runlog.py close)" for i in open_runs]
+    cfg = C.load_config()
+    stale = C.now(cfg) - timedelta(hours=12)
+    for r in runs:
+        started = C.parse_dt(r.get("started"))
+        if r.get("status") == "open" and started and started < stale:
+            problems.append(f"run {r.get('id')} has been open for over 12 h; close it or "
+                            f"mark it: python3 scripts/runlog.py abandon --run {r.get('id')}")
     rep.add("run log", problems)
 
 
