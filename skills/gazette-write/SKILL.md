@@ -85,7 +85,7 @@ Plain language, built from zero: the one-line idea → how it works → what it 
 ## 7. Corrections
 
 When a fact was wrong:
-1. Fix the record and the body. Add `"corrections": [{"date": "31 Oct", "text": "An earlier version said X. The source says Y."}]`. It renders at the top of the story.
+1. Fix the record and the body. Add `"corrections": [{"date": "31 Oct", "text": "An earlier version said X. The source says Y."}]`. It renders at the top of the story as `<p class="correction">`. That notice is the only place the old wording may appear; `check.py` ignores it there and fails everywhere else.
 2. Fix the headline in the record. Every page that links to it updates on the next build.
 3. Add the wrong wording to `data/corrections.json` → `do_not_reintroduce`: `{ "wrong", "right", "story", "date" }`. From then on `check.py` fails if it reappears anywhere.
 4. Note it in `notes/MEMORY.md`.
