@@ -21,6 +21,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common as C  # noqa: E402
 
 
+CORRECTION_NOTE = re.compile(r'<p class="correction">.*?</p>', re.S)
+
+
 class Links(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -189,7 +192,9 @@ def check_corrections(site: Path, rep: Report) -> None:
     for item in corr:
         phrase = item["wrong"] if isinstance(item, dict) else item
         for f in site.rglob("*.html"):
-            if phrase.lower() in f.read_text(encoding="utf-8").lower():
+            # the correction notice itself may quote the old wording; everything else may not
+            text = CORRECTION_NOTE.sub("", f.read_text(encoding="utf-8"))
+            if phrase.lower() in text.lower():
                 hits.append(f"{f.relative_to(site)}: corrected wording came back: {phrase!r}")
     rep.add("corrected wording reintroduced", hits)
 
