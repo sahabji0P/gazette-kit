@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 scripts/fetch.py:*)",
+      "Bash(python3 scripts/build.py:*)",
+      "Bash(python3 scripts/check.py:*)",
+      "Bash(python3 scripts/runlog.py:*)",
+      "Bash(open out/index.html)",
+      "WebFetch",
+      "WebSearch",
+      "Edit(data/**)",
+      "Write(data/**)",
+      "Edit(notes/**)",
+      "Edit(hunts/**)",
+      "Write(hunts/**)"
+    ]
+  }
+}
