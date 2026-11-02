@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Context windows, explained from zero: what “400K tokens” buys you, and what it doesn’t — THE SAMPLE GAZETTE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&amp;family=Playfair+Display:wght@700;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="sample-banner">Sample edition — every story, company, product and number in it is made up.</div>
+<div class="story-page" data-section="learn" data-story-id="learn-context-windows">
+<nav class="crumbs" aria-label="Breadcrumb"><a class="crumb-front" href="../index.html">← Front page</a><span class="sep">›</span><a class="crumb-sec" href="section-learn.html">Learn</a><span class="sep">·</span><a href="glossary.html">Glossary</a></nav>
+<nav class="nav-bar" aria-label="Sections">
+  <a href="../index.html" data-nav="index.html">Front</a>
+  <a href="section-models.html" data-nav="section-models.html">Models</a>
+  <a href="section-tools.html" data-nav="section-tools.html">Tools</a>
+  <a href="section-build.html" data-nav="section-build.html">Build</a>
+  <a href="section-startups.html" data-nav="section-startups.html">Startups</a>
+  <a href="section-learn.html" data-nav="section-learn.html">Learn</a>
+  <a href="section-hardware.html" data-nav="section-hardware.html">Hardware</a>
+  <a href="section-people.html" data-nav="section-people.html">People</a>
+  <a href="../wire.html" data-nav="wire.html">Wire</a>
+  <a href="glossary.html" data-nav="glossary.html">Glossary</a>
+  <a href="../saved.html" data-nav="saved.html">Saved</a>
+  <a href="../archive.html" data-nav="archive.html">Archive</a>
+</nav>
+<p class="kicker">Learn · Confirmed · 2 Nov 2026</p>
+<h1 class="hed">Context windows, explained from zero: what “400K tokens” buys you, and what it doesn’t</h1>
+<p class="dek">Learn explainer · tokens · context window · why long context is not memory</p>
+<p class="byline"><strong>By Informer</strong> · Vol. 1, No. 3</p>
+<div class="story-meta"><div class="cat-row"><a class="cat-chip sec-chip" href="section-learn.html">Learn</a><a class="cat-chip thread-chip" href="thread-memory.html">Memory</a></div><div class="story-actions"><button type="button" class="save-btn" data-save-id="learn-context-windows" aria-pressed="false">Save</button></div></div>
+
+<section class="what-happened" id="what-happened">
+<h2>What happened</h2>
+<p class="wh-line">A <a class="gl" href="glossary.html#context-window" title="Glossary: Context window">context window</a> is how much text a model can read in one go; Kestrel 3&#x27;s is 400K <a class="gl" href="glossary.html#token" title="Glossary: Token">tokens</a>, roughly a long novel.</p>
+<p class="wh-line">Reading more is not remembering: when the conversation ends, the window is empty again.</p>
+</section>
+<section class="why-matters" id="why-it-matters">
+<h2>Why it matters</h2>
+<p>Bigger windows make some tasks simpler, but they cost more per call and do not replace a memory you control.</p>
+</section>
+<section class="details" id="details">
+<h2 class="tpl-h">Details</h2>
+<div class="story-body">
+<h2>The one-line idea</h2>
+<p>A model reads text in tokens. Its context window is the most tokens it can read in one call: your prompt, any documents, and the conversation so far.</p>
+<h2>What 400K buys</h2>
+<p>About 300,000 English words — a long novel, or a mid-sized codebase. You can paste a whole contract instead of chunking it.</p>
+<h2>What it does not buy</h2>
+<p>Memory. When the call ends, the window is empty. Anything the model should know next time has to be stored somewhere and put back in. Long windows also cost more: you pay for every token you send, every call.</p>
+<h2>Self-test</h2>
+<details class="selftest"><summary>Your assistant forgets a user's name between chats, even with a 400K window. Why?</summary>
+<p>Because the window is per call. The name has to be saved in a memory store and added to the next prompt.</p></details>
+</div>
+<div class="why-box take-box"><h2>Informer’s take</h2>
+<p>Treat a long context like a big desk, not a filing cabinet.</p>
+</div>
+
+<div class="learn-box for-you"><h2>For you (Pocketful)</h2>
+<ul><li>Pocketful&#x27;s monthly summary fits in 20K tokens; a 400K window doesn&#x27;t help it, a cheaper model does.</li></ul>
+</div>
+</section>
+<section class="sources receipts" id="receipts">
+<h2>Receipts</h2>
+<ul>
+<li><a href="https://example.com/northwind/docs/context">Northwind docs — context and tokens</a><span class="fact-status confirmed">CONFIRMED</span> <span class="muted">· checked 14:00 IST 2 Nov</span></li>
+</ul>
+</section>
+<section class="related" id="related">
+<h2>Related</h2>
+<div class="chain" data-chain="Learn from zero"><p class="chain-name">Learn from zero · 1 of 2</p><div class="chain-nav"><a class="chain-next" href="learn-barge-in.html">Barge-in, explained from zero: what has to happen when you talk over a voice agent →</a></div></div>
+<h3 class="rel-h">Related news</h3><ul class="rel-news"><li><a href="northwind-kestrel-3.html">Northwind’s Kestrel 3 costs a fifth of Kestrel 2, reads 400K tokens at once — and its Mini version runs on a laptop</a></li><li><a href="brightline-memory-seed.html">Brightline raises a $6M seed to give agents memory that users can read and delete</a></li></ul>
+<p class="rel-threads"><a href="section-learn.html">All Learn</a> · <a href="thread-memory.html">Memory</a> · <a href="glossary.html">Glossary</a></p>
+</section>
+<footer class="footer story-foot">
+<span><a href="../index.html">← Front page</a> · <a href="section-learn.html">Learn</a> · <a href="glossary.html">Glossary</a></span>
+<span>THE SAMPLE GAZETTE · Vol. 1, No. 3</span>
+</footer>
+</div>
+
+<script src="../assets/site.js"></script>
+<script src="../assets/nav.js"></script>
+<script src="../assets/save.js"></script>
+</body>
+</html>

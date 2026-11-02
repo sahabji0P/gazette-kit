@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tessellate’s coding agent now runs every plugin in its own sandbox — no network, no home folder, unless you allow it — THE SAMPLE GAZETTE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&amp;family=Playfair+Display:wght@700;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="sample-banner">Sample edition — every story, company, product and number in it is made up.</div>
+<div class="story-page" data-section="tools" data-story-id="tessellate-tess-cli-2">
+<nav class="crumbs" aria-label="Breadcrumb"><a class="crumb-front" href="../index.html">← Front page</a><span class="sep">›</span><a class="crumb-sec" href="section-tools.html">Tools &amp; Harnesses</a><span class="sep">·</span><a href="glossary.html">Glossary</a></nav>
+<nav class="nav-bar" aria-label="Sections">
+  <a href="../index.html" data-nav="index.html">Front</a>
+  <a href="section-models.html" data-nav="section-models.html">Models</a>
+  <a href="section-tools.html" data-nav="section-tools.html">Tools</a>
+  <a href="section-build.html" data-nav="section-build.html">Build</a>
+  <a href="section-startups.html" data-nav="section-startups.html">Startups</a>
+  <a href="section-learn.html" data-nav="section-learn.html">Learn</a>
+  <a href="section-hardware.html" data-nav="section-hardware.html">Hardware</a>
+  <a href="section-people.html" data-nav="section-people.html">People</a>
+  <a href="../wire.html" data-nav="wire.html">Wire</a>
+  <a href="glossary.html" data-nav="glossary.html">Glossary</a>
+  <a href="../saved.html" data-nav="saved.html">Saved</a>
+  <a href="../archive.html" data-nav="archive.html">Archive</a>
+</nav>
+<p class="kicker">Tools &amp; Harnesses · Confirmed · 2 Nov 2026</p>
+<h1 class="hed">Tessellate’s coding agent now runs every plugin in its own sandbox — no network, no home folder, unless you allow it</h1>
+<p class="dek">Tess CLI 2.0 · plugins isolated by default · a per-plugin allowlist</p>
+<p class="byline"><strong>By Informer</strong> · Vol. 1, No. 3</p>
+<div class="story-meta"><div class="cat-row"><a class="cat-chip sec-chip" href="section-tools.html">Tools</a><a class="cat-chip thread-chip" href="thread-safety.html">Safety</a><span class="cat-chip">Agents</span></div><div class="story-actions"><button type="button" class="save-btn" data-save-id="tessellate-tess-cli-2" aria-pressed="false">Save</button></div></div>
+
+<section class="what-happened" id="what-happened">
+<h2>What happened</h2>
+<p class="wh-line">Tess CLI 2.0 runs each plugin in a separate <a class="gl" href="glossary.html#sandbox" title="Glossary: Sandbox">sandbox</a> with no network and no access to your home folder by default.</p>
+<p class="wh-line">Owners grant access per plugin in a small <a class="gl" href="glossary.html#allowlist" title="Glossary: Allowlist">allowlist</a> file that lives next to the project.</p>
+</section>
+<section class="why-matters" id="why-it-matters">
+<h2>Why it matters</h2>
+<p>After last week&#x27;s plugin incident, default-deny is the right shape: a bad plugin can only touch what you listed.</p>
+</section>
+<section class="details" id="details">
+<h2 class="tpl-h">Details</h2>
+<div class="story-body">
+<h2>What changed</h2>
+<p>Every plugin now starts in its own sandbox: no network, no access to your home folder, no environment variables. To give a plugin more, you add a line to <code>.tess/allow.toml</code> in the project:</p>
+<pre><code>[plugins."tess-fmt"]
+read = ["./src"]
+network = []</code></pre>
+<p>The allowlist is a file, so it shows up in code review like any other change.</p>
+<h2>Why now</h2>
+<p>Last week a tampered community plugin read API keys from about 4,000 machines. Under the new defaults it would have seen no keys at all.</p>
+</div>
+<div class="why-box take-box"><h2>Informer’s take</h2>
+<p>The allowlist file is the useful part: permissions you can read in a code review beat permissions hidden in a settings screen.</p>
+</div>
+<div class="learn-box"><h2>What to learn / try</h2>
+<ul><li>Write down which folders and hosts your own agent plugins actually need; that list is your allowlist.</li></ul>
+</div>
+
+</section>
+<section class="sources receipts" id="receipts">
+<h2>Receipts</h2>
+<ul>
+<li><a href="https://example.com/tessellate/releases/2.0.0">Tess CLI 2.0 release notes</a><span class="fact-status confirmed">CONFIRMED</span> <span class="muted">· checked 13:40 IST 2 Nov</span></li>
+<li><a href="https://example.com/tessellate/docs/permissions">Tessellate docs — plugin permissions</a><span class="fact-status confirmed">CONFIRMED</span> <span class="muted">· checked 13:42 IST 2 Nov</span></li>
+</ul>
+</section>
+<section class="related" id="related">
+<h2>Related</h2>
+<h3 class="rel-h">Explainers &amp; Build</h3><ul class="rel-expl"><li><a href="build-cheap-draft-strong-check.html">Build: draft with a small local model, check with a big one — and only pay the big one when the draft fails</a></li></ul>
+<h3 class="rel-h">Related news</h3><ul class="rel-news"><li><a href="tessellate-plugin-incident.html">A tampered Tess plugin copied API keys from about 4,000 machines before it was pulled</a></li></ul>
+<p class="rel-threads"><a href="section-tools.html">All Tools &amp; Harnesses</a> · <a href="thread-safety.html">Harness safety &amp; sandbox</a> · <a href="glossary.html">Glossary</a></p>
+</section>
+<footer class="footer story-foot">
+<span><a href="../index.html">← Front page</a> · <a href="section-tools.html">Tools &amp; Harnesses</a> · <a href="glossary.html">Glossary</a></span>
+<span>THE SAMPLE GAZETTE · Vol. 1, No. 3</span>
+</footer>
+</div>
+
+<script src="../assets/site.js"></script>
+<script src="../assets/nav.js"></script>
+<script src="../assets/save.js"></script>
+</body>
+</html>

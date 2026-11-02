@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading — THE SAMPLE GAZETTE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&amp;family=Playfair+Display:wght@700;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="app-shell reader-mode">
+<div class="sample-banner">Sample edition — every story, company, product and number in it is made up.</div>
+<div class="app-frame reader-frame" role="application" aria-label="THE SAMPLE GAZETTE split reader">
+  <header class="reader-bar">
+    <a class="close-front" href="index.html" id="close-btn" title="Return to the front page">← Close · Front</a>
+    <div class="reader-title">
+      <strong>THE SAMPLE GAZETTE</strong>
+      <span class="reader-sub">Split reader</span>
+    </div>
+    <nav class="reader-desks" aria-label="Desks"><a href="index.html">Front</a><a href="wire.html">Wire</a><a href="build.html">Build</a><a href="archive.html">Archive</a><a href="saved.html">Saved</a></nav>
+    <div class="reader-actions" id="reader-actions"></div>
+  </header>
+  <div class="app-split">
+    <aside class="list-col" aria-label="Other stories">
+      <p class="list-help">Jump between stories. Close returns to the front page.</p>
+      <div id="list-pane"></div>
+    </aside>
+    <section class="detail-col" aria-label="Story reader">
+      <iframe id="detail-frame" title="Story" class="hidden"></iframe>
+      <div id="detail-fallback" class="hidden"></div>
+    </section>
+  </div>
+</div>
+
+<script src="assets/site.js"></script>
+<script src="assets/catalog.js"></script>
+<script src="assets/save.js"></script>
+<script src="assets/reader.js"></script>
+</body>
+</html>
