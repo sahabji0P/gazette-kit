@@ -1,0 +1,28 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  kit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Regression tests
+        run: python -m unittest discover -s tests -v
+      - name: Private build passes the gate
+        run: python scripts/build.py && python scripts/check.py
+      - name: Public build passes the gate and the privacy scan
+        run: python scripts/build.py --public && python scripts/check.py --public
+      - name: Committed sample edition matches a fresh build
+        run: |
+          python scripts/build.py --out /tmp/sample
+          diff -r /tmp/sample examples/sample-edition
