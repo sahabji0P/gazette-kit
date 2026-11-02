@@ -1,0 +1,21 @@
+<div class="app-frame reader-frame" role="application" aria-label="{{paper_name}} split reader">
+  <header class="reader-bar">
+    <a class="close-front" href="index.html" id="close-btn" title="Return to the front page">← Close · Front</a>
+    <div class="reader-title">
+      <strong>{{paper_name}}</strong>
+      <span class="reader-sub">Split reader</span>
+    </div>
+    <nav class="reader-desks" aria-label="Desks">{{desk_links}}</nav>
+    <div class="reader-actions" id="reader-actions"></div>
+  </header>
+  <div class="app-split">
+    <aside class="list-col" aria-label="Other stories">
+      <p class="list-help">Jump between stories. Close returns to the front page.</p>
+      <div id="list-pane"></div>
+    </aside>
+    <section class="detail-col" aria-label="Story reader">
+      <iframe id="detail-frame" title="Story" class="hidden"></iframe>
+      <div id="detail-fallback" class="hidden"></div>
+    </section>
+  </div>
+</div>
