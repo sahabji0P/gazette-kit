@@ -75,6 +75,7 @@
   "policy": {
     "strike_threshold": 7,
     "front_per_section": 5,
+    "max_items_per_source": 40,
     "seen_ttl_days": 45,
     "title_dupe_threshold": 0.6
   },
