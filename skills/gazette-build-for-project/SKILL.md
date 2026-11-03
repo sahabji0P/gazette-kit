@@ -35,6 +35,7 @@ Optional body (`data/bodies/<id>.html`): steps, a small code sketch, risks, and 
 - Project ideas are **suggestions**, never news. Say so.
 - Inside *public* stories, anything about the project goes in `for_you` (record) or between `<!-- private -->` and `<!-- /private -->` (body). Never in `headline`, `dek`, `what_happened`, `why_it_matters` or `take`.
 - Wire or ticker lines about the project get `"private": true`.
+- **Any project detail in a public field is a leak, even without the project's name.** The public check can only find the marker words in `project.private_markers`; it can't recognise a paraphrase ("the student budgeting app"). Keeping project details out of public fields is your job, not the script's.
 - Before anything leaves the machine, `python3 scripts/build.py --public && python3 scripts/check.py --public` must pass with 0 private markers.
 
 ## General build ideas

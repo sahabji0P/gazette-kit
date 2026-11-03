@@ -13,12 +13,16 @@ import argparse
 import json
 import re
 import sys
+from datetime import timedelta
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import common as C  # noqa: E402
+
+
+CORRECTION_NOTE = re.compile(r'<p class="correction">.*?</p>', re.S)
 
 
 class Links(HTMLParser):
@@ -91,8 +95,13 @@ def check_data(cfg: dict, cat: dict, rep: Report) -> None:
         if strike is not None and not (1 <= strike <= 10):
             problems.append(f"{sid}: strike must be 1–10")
     leads = [s["id"] for s in stories if s.get("status") == "lead"]
-    if cat.get("lead") and leads != [cat["lead"]]:
-        problems.append(f"lead is {cat.get('lead')!r} but stories with status lead are {leads}")
+    expected = [cat["lead"]] if cat.get("lead") else []
+    if leads != expected:
+        problems.append(f"stories.json → lead is {cat.get('lead')!r} but stories with status \"lead\" are {leads} "
+                        "(there must be exactly one, and they must match)")
+    live = [s for s in stories if s.get("status") != "archive"]
+    if live and not cat.get("lead"):
+        problems.append("stories.json → lead is empty but there are live stories; pick a lead")
     rep.add("story records", problems)
 
     one_way, missing = [], []
@@ -117,6 +126,11 @@ def check_data(cfg: dict, cat: dict, rep: Report) -> None:
     rep.add("live lead/confirmed stories without a page (add what_happened)", pages)
 
     bodies = C.DATA / "bodies"
+    tags = []
+    for p in sorted(bodies.glob("*.html")) if bodies.exists() else []:
+        tags += [f"{p.name}: {x}" for x in C.private_tag_problems(p.read_text(encoding="utf-8"))]
+    rep.add("unbalanced <!-- private --> blocks in bodies", tags)
+
     orphans = [p.name for p in bodies.glob("*.html") if p.stem not in by_id] if bodies.exists() else []
     rep.add("body files with no story record", orphans)
 
@@ -184,7 +198,9 @@ def check_corrections(site: Path, rep: Report) -> None:
     for item in corr:
         phrase = item["wrong"] if isinstance(item, dict) else item
         for f in site.rglob("*.html"):
-            if phrase.lower() in f.read_text(encoding="utf-8").lower():
+            # the correction notice itself may quote the old wording; everything else may not
+            text = CORRECTION_NOTE.sub("", f.read_text(encoding="utf-8"))
+            if phrase.lower() in text.lower():
                 hits.append(f"{f.relative_to(site)}: corrected wording came back: {phrase!r}")
     rep.add("corrected wording reintroduced", hits)
 
@@ -199,6 +215,8 @@ def check_privacy(cfg: dict, site: Path, rep: Report) -> None:
         for m in markers:
             if m.lower() in text:
                 hits.append(f"{f.relative_to(site)}: contains {m!r}")
+        if C.PRIVATE_TAG.search(text):
+            hits.append(f"{f.relative_to(site)}: contains a private-block tag (something private was not stripped)")
     rep.add(f"private markers in public output ({', '.join(markers)})", hits)
 
 
@@ -209,8 +227,13 @@ def check_runs(rep: Report) -> None:
         if r.get("status") == "quiet" and r.get("sources_attempted"):
             if r.get("sources_ok", 0) / r["sources_attempted"] < 0.5:
                 problems.append(f"run {r.get('id')}: marked quiet but most sources failed — it was a failed run")
-    open_runs = [r.get("id") for r in runs[:-1] if r.get("status") == "open"]
-    problems += [f"run {i} was never closed (scripts/runlog.py close)" for i in open_runs]
+    cfg = C.load_config()
+    stale = C.now(cfg) - timedelta(hours=12)
+    for r in runs:
+        started = C.parse_dt(r.get("started"))
+        if r.get("status") == "open" and started and started < stale:
+            problems.append(f"run {r.get('id')} has been open for over 12 h; close it or "
+                            f"mark it: python3 scripts/runlog.py abandon --run {r.get('id')}")
     rep.add("run log", problems)
 
 

@@ -47,7 +47,7 @@ python3 scripts/fetch.py --hours 24
 ```
 Report which feeds failed and fix their URLs with the owner. Then close the test run:
 ```bash
-python3 scripts/runlog.py close --status quiet --top-strike 0 --note "setup test"
+python3 scripts/runlog.py close --run <run-id> --status quiet --top-strike 0 --note "setup test"
 ```
 (If most feeds failed, use `--status failed`.)
 

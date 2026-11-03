@@ -12,7 +12,13 @@
       "Write(data/**)",
       "Edit(notes/**)",
       "Edit(hunts/**)",
-      "Write(hunts/**)"
+      "Write(hunts/**)",
+      "Write(notes/**)",
+      "Bash(git status)",
+      "Bash(git add data notes hunts)",
+      "Bash(git commit -m:*)",
+      "Bash(git pull --rebase)",
+      "Bash(git push)"
     ]
   }
 }

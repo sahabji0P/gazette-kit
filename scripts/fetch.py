@@ -108,6 +108,7 @@ def main() -> None:
     ap.add_argument("--since", help="ISO time; default = start of the last closed run, else --hours ago")
     ap.add_argument("--hours", type=float, default=24.0, help="window when there is no previous run (default 24)")
     ap.add_argument("--timeout", type=int, default=20)
+    ap.add_argument("--max-per-source", type=int, help="cap new items kept per feed (default policy.max_items_per_source, else 40)")
     args = ap.parse_args()
 
     cfg = C.load_config()
@@ -128,6 +129,7 @@ def main() -> None:
     seen_titles = [(C.title_tokens(e.get("title", "")), e) for e in seen if e.get("title")]
     threshold = float(cfg["policy"].get("title_dupe_threshold", 0.6))
 
+    cap = args.max_per_source or int(cfg["policy"].get("max_items_per_source", 40))
     sources, manual, items, by_url = [], [], [], {}
     for feed in cfg["sources"].get("feeds", []):
         if feed.get("type") == "page":
@@ -141,7 +143,8 @@ def main() -> None:
             rec.update(ok=False, error=f"{type(e).__name__}: {e}"[:200], items_total=0)
             sources.append(rec)
             continue
-        fresh = 0
+        fresh = dropped = 0
+        entries.sort(key=lambda e: -(parse_date(e["published"]).timestamp() if parse_date(e["published"]) else 0))
         for en in entries:
             url = C.canonical_url(en["url"])
             if not url:
@@ -151,6 +154,9 @@ def main() -> None:
                 continue
             if url in by_url:
                 by_url[url]["also_in"].append(feed["id"])
+                continue
+            if fresh >= cap:  # newest first, so the cap drops the oldest
+                dropped += 1
                 continue
             item = {
                 "source": feed["id"], "tier": rec["tier"], "title": en["title"], "url": url,
@@ -168,6 +174,7 @@ def main() -> None:
             items.append(item)
             fresh += 1
         rec["items_in_window"] = fresh
+        rec["items_over_cap"] = dropped
         sources.append(rec)
 
     items.sort(key=lambda i: (i.get("tier", 2), -(C.parse_dt(i["published"]).timestamp() if i.get("published") else 0)))
@@ -198,9 +205,7 @@ def main() -> None:
         delta = (started - sched).total_seconds() / 60
         if 0 <= delta < 24 * 60 and (late is None or delta < late[1]):
             late = (slot.get("slot"), delta)
-    for r in runs["runs"]:
-        if r.get("status") == "open":  # a run that was never closed is recorded as abandoned, not erased
-            r.update(status="abandoned", note=(r.get("note") or "") + " (never closed; superseded by " + run_id + ")")
+    still_open = [r["id"] for r in runs["runs"] if r.get("status") == "open"]
     runs["runs"].append({
         "id": run_id,
         "started": started.isoformat(),
@@ -215,11 +220,18 @@ def main() -> None:
     })
     C.save_json(C.DATA / "runs.json", runs)
 
-    print(f"run {run_id}: window since {snapshot['since']}")
+    print(f"run id: {run_id}   (close it with: python3 scripts/runlog.py close --run {run_id} …)")
+    print(f"window since {snapshot['since']}")
+    if still_open:
+        print(f"NOTE: other runs are still open: {', '.join(still_open)}. If one is still working, leave it alone; "
+              f"if it died, mark it with: python3 scripts/runlog.py abandon --run <id>")
     print(f"sources ok {ok}/{attempted} · items in window {len(items)} · new {new} · manual checks {len(manual)}")
     for s in sources:
-        if not s["ok"]:
-            print(f"  FAILED {s['id']}: {s['error']}")
+        if s["ok"]:
+            extra = f" (+{s['items_over_cap']} older over the cap)" if s.get("items_over_cap") else ""
+            print(f"  tier {s['tier']} {s['id']}: {s['items_in_window']} in window{extra}")
+        else:
+            print(f"  tier {s['tier']} {s['id']}: FAILED {s['error']}")
     if attempted and ok / attempted < 0.5:
         print("WARNING: most sources failed. If you stop here, close the run as 'failed', not 'quiet'.")
     limit = int(cfg["schedule"].get("late_after_minutes", 90))
